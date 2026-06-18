@@ -50,9 +50,9 @@ function SidebarContent({ user, onLogout, onSearchOpen, closeMenu }) {
           className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0"
           style={{ background: "var(--color-primary)" }}
         >
-          <Rocket size={13} color="#fff" aria-hidden="true" />
+          <Rocket size={18} color="#fff" aria-hidden="true" />
         </div>
-        <span className="text-[13px] font-bold tracking-tight" style={{ color: "var(--color-sidebar-text)" }}>
+        <span className="text-[18px] font-bold tracking-tight" style={{ color: "var(--color-sidebar-text)" }}>
           PlacementPilot
         </span>
         <div className="ml-auto">
@@ -181,7 +181,7 @@ export default function Layout() {
 
   useEffect(() => {
     if (sideRef.current) {
-      gsap.from(sideRef.current, { x: -20, opacity: 0, duration: 0.5, ease: "power3.out" });
+      gsap.from(sideRef.current, { x: 0, opacity: 1, duration: 0.5, ease: "power3.out" });
     }
   }, []);
 
