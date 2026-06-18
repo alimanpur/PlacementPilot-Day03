@@ -31,7 +31,7 @@ export function AuthLayout({ children, heading, sub }) {
       {/* Left panel */}
       <div
         ref={leftRef}
-        className="hidden lg:flex flex-col justify-between w-[58%] shrink-0"
+        className="hidden lg:flex flex-col justify-between w-[58%] shrink-0 px-12 py-12"
         style={{ background: "var(--color-sidebar)" }}
       >
         <div className="flex items-center gap-2.5">
