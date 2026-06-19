@@ -9,15 +9,33 @@ import dsaRoutes from "./routes/dsa.js";
 import interviewRoutes from "./routes/interview.js";
 import analyticsRoutes from "./routes/analytics.js";
 
+// ── Startup validation — fail loudly if critical env vars are missing ──
+const REQUIRED_ENV = ["DATABASE_URL", "JWT_SECRET", "CLIENT_URL"];
+const missing = REQUIRED_ENV.filter((key) => !process.env[key]);
+if (missing.length > 0) {
+  console.error("[FATAL] Missing required environment variables:", missing.join(", "));
+  console.error("[FATAL] Set these in Render dashboard → Environment → Environment Variables");
+  process.exit(1);
+}
+
+console.log("[ENV] DATABASE_URL:", process.env.DATABASE_URL ? "✓ set" : "✗ missing");
+console.log("[ENV] JWT_SECRET:", process.env.JWT_SECRET ? "✓ set" : "✗ missing");
+console.log("[ENV] CLIENT_URL:", process.env.CLIENT_URL);
+console.log("[ENV] NODE_ENV:", process.env.NODE_ENV || "not set (defaults to development)");
+
 const app = express();
 
 // CORS — allow CLIENT_URL and common localhost dev ports
+// Strip trailing slash from CLIENT_URL to avoid CORS mismatch
+const clientUrl = (process.env.CLIENT_URL || "").replace(/\/+$/, "");
 const allowedOrigins = [
-  process.env.CLIENT_URL,
+  clientUrl,
   "http://localhost:5173",
   "http://localhost:3000",
   "http://127.0.0.1:5173",
 ].filter(Boolean);
+
+console.log("[CORS] Allowed origins:", allowedOrigins);
 
 app.use(
   cors({
@@ -28,6 +46,8 @@ app.use(
       callback(new Error(`CORS blocked: ${origin}`));
     },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
